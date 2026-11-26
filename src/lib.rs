@@ -28,7 +28,7 @@ impl Currency {
 /// Money is ALWAYS integer minor units. Never floats.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Money {
-    pub amount_minor: i64,
+    pub amount_cents: i64,
     pub currency: Currency,
 }
 
@@ -63,10 +63,10 @@ pub fn validate_charge(req: &ChargeRequest) -> Result<(), ContractError> {
     if req.idempotency_key.trim().is_empty() {
         return Err(ContractError::MissingIdempotencyKey);
     }
-    if req.amount.amount_minor <= 0 {
+    if req.amount.amount_cents <= 0 {
         return Err(ContractError::NonPositiveAmount);
     }
-    if req.amount.amount_minor > MAX_CHARGE_MINOR {
+    if req.amount.amount_cents > MAX_CHARGE_MINOR {
         return Err(ContractError::AmountTooLarge);
     }
     Ok(())
@@ -80,7 +80,7 @@ mod tests {
         ChargeRequest {
             idempotency_key: key.into(),
             customer_id: "cus_1".into(),
-            amount: Money { amount_minor: amt, currency: Currency::USD },
+            amount: Money { amount_cents: amt, currency: Currency::USD },
         }
     }
 
