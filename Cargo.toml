@@ -1,0 +1,8 @@
+[package]
+name = "payments-contracts"
+version = "0.1.0"
+edition = "2021"
+description = "Shared wire contracts for the payments platform (consumed by rust service and others)"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
